@@ -1,4 +1,4 @@
-package com.healty
+package com.healthy
 
 import android.app.Application
 import com.facebook.react.PackageList
