@@ -1,4 +1,4 @@
-import { db } from "./firebase";
+import { db } from "./shared/firebase";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import {
@@ -6,6 +6,17 @@ import {
   getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  createBrowserRouter,
+  RouterProvider,
+  redirect,
+  Navigate,
+} from "react-router-dom";
+import Home from "./pages/Home";
+import LogIn from "./pages/LogIn";
 
 function App() {
   const [userId, setUserId] = useState("");
@@ -13,7 +24,6 @@ function App() {
   const auth = getAuth();
   const user = auth.currentUser;
 
-  console.log(user);
   const getTest = async () => {
     // db 뒤에 "techInfo"는 정보를 가져올 컬렉션 이름이다.
     const query = await getDocs(collection(db, "item"));
@@ -29,27 +39,20 @@ function App() {
     );
   };
 
-  const loginEmail = () => {
-    return signInWithEmailAndPassword(auth, userId, userPw).then((e) =>
-      console.log(e)
-    );
-  };
-
-  // 최초 마운트 시에 getTest import
-  useEffect(() => {
-    getTest();
-  }, []);
+  console.log(user);
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: !user ? <Navigate replace={true} to="/logIn" /> : <Home />,
+    },
+    {
+      path: "/logIn",
+      element: <LogIn />,
+    },
+  ]);
   return (
     <div>
-      <input
-        value={userId}
-        onChange={(e) => setUserId(e.currentTarget.value)}
-      />
-      <input
-        value={userPw}
-        onChange={(e) => setUserPw(e.currentTarget.value)}
-      />
-      <button onClick={() => loginEmail()}>submit</button>
+      <RouterProvider router={router} />
     </div>
   );
 }
