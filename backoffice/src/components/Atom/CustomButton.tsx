@@ -34,6 +34,7 @@ function CustomButton({
 const Button = styled.button<{
   buttonProps: Omit<CustomButtonProps, "label" | "onClick">;
 }>`
+  width: ${({ buttonProps }) => buttonProps.fullWidth && "100%"};
   background-color: ${({ buttonProps }) => {
     if (buttonProps.type === "contained") {
       switch (buttonProps.color) {

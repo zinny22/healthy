@@ -1,13 +1,14 @@
 import styled from "@emotion/styled";
 import HeaderNavItem from "components/Atom/HeaderNavItem";
 import HeaderSubNavItem from "components/Atom/HeaderSubNavItem";
+import { To } from "router/router";
 
 function Navigation() {
   return (
     <Wrapper>
       <Inner>
         <HeaderNavItem label="전시 관리">
-          <HeaderSubNavItem label="체질 데이터 관리" to={"/"} />
+          <HeaderSubNavItem label="체질 데이터 관리" to={To.BodyTypeList} />
         </HeaderNavItem>
       </Inner>
     </Wrapper>
