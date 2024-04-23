@@ -1,25 +1,23 @@
 import styled from "@emotion/styled";
 import CustomButton from "components/Atom/CustomButton";
 import CustomInput from "components/Atom/CustomInput";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function LogIn() {
-  const auth = getAuth();
+function LogInPage() {
+  // const auth = getAuth();
   const navigate = useNavigate();
 
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
 
   const handelClickLogIn = () => {
-    return signInWithEmailAndPassword(auth, id, pw)
-      .then((e) => {
-        console.log(e);
-
-        return navigate("/");
-      })
-      .catch((err) => console.log(err));
+    // return signInWithEmailAndPassword(auth, id, pw)
+    //   .then((e) => {
+    //     console.log(e);
+    //     return navigate("/");
+    //   })
+    //   .catch((err) => console.log(err));
   };
 
   return (
@@ -32,10 +30,7 @@ function LogIn() {
       <Box>
         <CustomInput
           initialValue={id}
-          passedHandleChange={(e) => {
-            console.log(e);
-            setId(e);
-          }}
+          passedHandleChange={(e) => setId(e)}
           label="ID"
         />
         <CustomInput
@@ -82,4 +77,4 @@ const Box = styled.section`
   row-gap: 20px;
   border-radius: 3px;
 `;
-export default LogIn;
+export default LogInPage;

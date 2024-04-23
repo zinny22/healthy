@@ -1,12 +1,12 @@
 import { redirect } from "react-router-dom";
 
-function Home() {
+function HomePage() {
   return (
     <div>
-      ?home<div>??</div>
+      ?HomePage<div>??</div>
       <button onClick={() => redirect("/signIn")}></button>
     </div>
   );
 }
 
-export default Home;
+export default HomePage;

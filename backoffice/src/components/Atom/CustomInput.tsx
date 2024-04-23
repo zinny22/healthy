@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
-import { ComponentProps, useState } from "react";
 import { ReactComponent as ClearText } from "assets/svgs/clearText.svg";
+import { ComponentProps, useState } from "react";
+import { Color, Type } from "./CustomButton";
 
 export type CustomInputProps = ComponentProps<"input"> & {
   label?: string;
@@ -11,6 +12,8 @@ export type CustomInputProps = ComponentProps<"input"> & {
     e?: React.ChangeEvent<HTMLInputElement>
   ) => void;
   placeHolder?: string;
+  color?: Color;
+  inputType?: Type;
 };
 
 function CustomInput({
@@ -19,6 +22,8 @@ function CustomInput({
   placeHolder,
   passedHandleChange,
   required = false,
+  color,
+  inputType,
   ...props
 }: CustomInputProps) {
   const [value, setValue] = useState(initialValue || "");
@@ -87,7 +92,7 @@ const Wrapper = styled.div`
   padding: 4px 12px;
 
   :hover {
-    background-color: #aeaeaebe;
+    background-color: #e1e1e15a;
   }
   transition: all;
   transition-timing-function: ease;
