@@ -5,36 +5,40 @@ import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Link, redirect } from "react-router-dom";
 import { To } from "router/router";
+import {
+  BodyTypeKey,
+  BodyTypeSchema,
+  BodyTypeValue,
+} from "schema/bodyType.schema";
 import { db } from "shared/firebase";
 
-export const BodyType = ["태음인", "소음인", "태양인", "소양인", "item"];
-
 function BodyTypeListPage() {
-  const [items, setItems] = useState<any[]>([]);
-  const [foods, setFoods] = useState<any[]>([]);
-  const [test, setTest] = useState<any[]>([]);
+  const [bodyType, setBodyType] = useState<BodyTypeSchema[]>([]);
 
-  const getTest = async () => {
-    BodyType.map(async (item) => {
-      const query = await getDocs(collection(db, item));
+  const initBodyTypeList = async () => {
+    const query = await getDocs(collection(db, "체질"));
 
-      if (!query) return;
+    if (!query) return;
 
-      query.forEach((doc) => {
-        const data = doc.data();
-        const id = doc.id;
-        setItems((p) => [...p, data]);
+    const newBodyTypes: BodyTypeSchema[] = [];
 
-        if (id === "운동") setTest((p) => [...p, data]);
-        if (id === "음식") setTest((p) => [...p, data]);
-      });
+    query.forEach((doc) => {
+      const value = doc.data() as BodyTypeValue;
+      const id = doc.id as BodyTypeKey;
+
+      const result: BodyTypeSchema = {
+        id,
+        value,
+      };
+
+      newBodyTypes.push(result);
     });
+
+    setBodyType(newBodyTypes);
   };
 
-  console.log(items);
-
   useEffect(() => {
-    getTest();
+    initBodyTypeList();
   }, []);
 
   return (
@@ -50,12 +54,12 @@ function BodyTypeListPage() {
 
       <Box width="100%">
         <ul>
-          {items.map((item, index) => (
-            <li key={index}>{index}</li>
+          {bodyType.map((item, index) => (
+            <li key={index}>
+              <Link to={To.BodyTypeDetail(item.id)}> {item.id}</Link>
+            </li>
           ))}
         </ul>
-        <div>?</div>
-        <Link to={To.BodyTypeDetail(3)}>3</Link>
       </Box>
     </Wrapper>
   );

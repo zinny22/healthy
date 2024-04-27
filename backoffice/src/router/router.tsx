@@ -11,5 +11,5 @@ export const To = {
   LogIn: "/logIn",
   BodyTypeList: "/bodyType",
   BodyTypeCreate: "/bodyType/create",
-  BodyTypeDetail: (id: number) => `/bodyType/${id}`,
+  BodyTypeDetail: (id: string) => `/bodyType/${id}`,
 };
