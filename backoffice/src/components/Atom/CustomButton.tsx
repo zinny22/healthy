@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import color from "styles/color";
 
-export type Color = "default" | "seconds" | "danger";
+export type Color = "default" | "seconds" | "danger" | "gray";
 export type Type = "contained" | "outline" | "none";
 export type Size = "sm" | "md" | "lg";
 
@@ -34,6 +34,7 @@ function CustomButton({
 const Button = styled.button<{
   buttonProps: Omit<CustomButtonProps, "label" | "onClick">;
 }>`
+  white-space: nowrap;
   width: ${({ buttonProps }) => buttonProps.fullWidth && "100%"};
   background-color: ${({ buttonProps }) => {
     if (buttonProps.type === "contained") {
@@ -44,6 +45,8 @@ const Button = styled.button<{
           return color.seconds30;
         case "danger":
           return color.danger30;
+        case "gray":
+          return color.gray300;
       }
     }
     return "transparent";
@@ -61,11 +64,11 @@ const Button = styled.button<{
   padding: ${({ buttonProps }) => {
     switch (buttonProps.size) {
       case "lg":
-        return "0px 12px";
+        return "8px 32px";
       case "md":
-        return "0px 8px";
+        return "4px 28px";
       case "sm":
-        return "0px 4px";
+        return "4px 20px";
     }
   }};
   font-weight: 500;
@@ -77,19 +80,11 @@ const Button = styled.button<{
         return color.seconds100;
       case "danger":
         return color.danger100;
+      case "gray":
+        return color.gray500;
     }
   }};
   border-radius: 10px;
-  height: ${({ buttonProps }) => {
-    switch (buttonProps.size) {
-      case "lg":
-        return "52px";
-      case "md":
-        return "48px";
-      case "sm":
-        return "44px";
-    }
-  }};
 
   border: ${({ buttonProps }) => {
     switch (buttonProps.type) {
@@ -101,6 +96,8 @@ const Button = styled.button<{
             return `1px solid ${color.seconds50}`;
           case "danger":
             return `1px solid ${color.danger50}`;
+          case "gray":
+            return `1px solid ${color.gray50}`;
           default:
             return `1px solid ${color.default50}`;
         }
@@ -118,6 +115,8 @@ const Button = styled.button<{
           return color.seconds20;
         case "danger":
           return color.danger20;
+        case "gray":
+          return color.gray200;
       }
     }};
 
@@ -131,6 +130,8 @@ const Button = styled.button<{
               return color.seconds60;
             case "danger":
               return color.dander60;
+            case "gray":
+              return color.gray400;
             default:
               return color.default60;
           }
@@ -142,6 +143,8 @@ const Button = styled.button<{
               return color.seconds100;
             case "danger":
               return color.danger100;
+            case "gray":
+              return color.gray100;
           }
       }
     }};
