@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import Box from "components/Atom/Box";
 import CustomButton from "components/Atom/CustomButton";
 import CustomInput from "components/Atom/CustomInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface BodyTypeExerciseFormProps {
   exercise: string[];
@@ -12,6 +12,10 @@ function BodyTypeExerciseForm({ exercise }: BodyTypeExerciseFormProps) {
   const [value, setValue] = useState<string>("");
   const [_exercise, setIsExercise] = useState<string[]>(exercise);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsExercise(exercise);
+  }, [exercise]);
 
   return (
     <Box

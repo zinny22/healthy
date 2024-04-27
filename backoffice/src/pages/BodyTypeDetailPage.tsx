@@ -32,8 +32,6 @@ function BodyTypeDetailPage() {
     initBodyTypeList();
   }, []);
 
-  console.log(value);
-
   return (
     <Wrapper>
       <BodyTypeExerciseForm exercise={exercise} />

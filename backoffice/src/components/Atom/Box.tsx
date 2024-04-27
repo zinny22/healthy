@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Dispatch, ReactNode, SetStateAction } from "react";
-import CustomButton from "./CustomButton";
+import EditControl from "./EditControl";
 
 type BoxProps = {
   children: ReactNode;
@@ -24,32 +24,13 @@ function Box({ children, width, title, ...props }: BoxProps) {
       <TitleAndButton>
         {title && <Title>{title}</Title>}
 
-        {props.showButton &&
-          (props.isEditMode ? (
-            <Buttons>
-              <CustomButton
-                label="취소"
-                onClick={() => props.setIsEditMode(false)}
-                size="sm"
-                color="gray"
-              />
-              <CustomButton
-                label="저장"
-                onClick={() => {
-                  props.setIsEditMode(false);
-                  props.onClickSave();
-                }}
-                size="sm"
-                color="danger"
-              />
-            </Buttons>
-          ) : (
-            <CustomButton
-              label="수정"
-              onClick={() => props.setIsEditMode(true)}
-              size="sm"
-            />
-          ))}
+        {props.showButton && (
+          <EditControl
+            isEditMode={props.isEditMode}
+            setIsEditMode={props.setIsEditMode}
+            onClickSave={props.onClickSave}
+          />
+        )}
       </TitleAndButton>
       {children}
     </Wrapper>
