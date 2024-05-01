@@ -1,8 +1,11 @@
 import styled from "@emotion/styled";
 import Box from "components/Atom/Box";
 import CustomButton from "components/Atom/CustomButton";
+import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { FoodType, FoodTypeKey } from "schema/bodyType.schema";
+import { db } from "shared/firebase";
 import color from "styles/color";
 import AddFoodModal from "./AddFoodModal";
 
@@ -11,9 +14,10 @@ interface BodyTypeFoodFormProps {
 }
 
 function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
+  const { id } = useParams();
+
   const [foodKey, setFoodKey] = useState<string>("");
   const [foodValues, setFoodValues] = useState<string[]>([]);
-
   const [_food, setFood] = useState<FoodType | undefined>(food);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -22,12 +26,13 @@ function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleClickSave = () => {
+  const handleClickAddFood = () => {
     let newFood: any;
 
     if (_food && _food.hasOwnProperty(foodKey)) {
       const existingValues = _food[foodKey as FoodTypeKey];
-      const updatedValues = [...existingValues, ...foodValues];
+      const setValues = new Set([...existingValues, ...foodValues]);
+      const updatedValues = [...setValues];
 
       newFood = {
         ..._food,
@@ -46,6 +51,14 @@ function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
     setIsModalOpen(false);
   };
 
+  const handelClickSave = async () => {
+    const bodyTypeRef = doc(db, "체질", id as string);
+
+    await updateDoc(bodyTypeRef, {
+      음식: _food,
+    });
+  };
+
   useEffect(() => {
     setFood(food);
   }, [food]);
@@ -57,7 +70,7 @@ function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
       showButton={true}
       isEditMode={isEditMode}
       setIsEditMode={setIsEditMode}
-      onClickSave={() => {}}
+      onClickSave={handelClickSave}
     >
       <List>
         {_food &&
@@ -82,7 +95,7 @@ function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
 
       <AddFoodModal
         isModalOpen={isModalOpen}
-        handleClickSave={handleClickSave}
+        handleClickSave={handleClickAddFood}
         toggleModal={toggleModal}
         foodKey={foodKey}
         setFoodKey={setFoodKey}

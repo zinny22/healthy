@@ -1,17 +1,41 @@
 import styled from "@emotion/styled";
 import Box from "components/Atom/Box";
-import CustomButton from "components/Atom/CustomButton";
 import CustomInput from "components/Atom/CustomInput";
+import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { db } from "shared/firebase";
 
 interface BodyTypeExerciseFormProps {
   exercise: string[];
 }
 
 function BodyTypeExerciseForm({ exercise }: BodyTypeExerciseFormProps) {
+  const { id } = useParams();
+
   const [value, setValue] = useState<string>("");
   const [_exercise, setExercise] = useState<string[]>(exercise);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      setValue("");
+      setExercise((p) => {
+        if (!value) {
+          return p;
+        }
+        return [...p, value];
+      });
+    }
+  };
+
+  const handelClickSave = async () => {
+    const bodyTypeRef = doc(db, "체질", id as string);
+
+    await updateDoc(bodyTypeRef, {
+      운동: _exercise,
+    });
+  };
 
   useEffect(() => {
     setExercise(exercise);
@@ -24,7 +48,7 @@ function BodyTypeExerciseForm({ exercise }: BodyTypeExerciseFormProps) {
       showButton={true}
       isEditMode={isEditMode}
       setIsEditMode={setIsEditMode}
-      onClickSave={() => {}}
+      onClickSave={handelClickSave}
     >
       <List>
         {_exercise.map((item, index) => (
@@ -35,23 +59,13 @@ function BodyTypeExerciseForm({ exercise }: BodyTypeExerciseFormProps) {
       </List>
 
       {isEditMode && (
-        <AddItem>
-          <CustomInput
-            initialValue={value}
-            passedHandleChange={(e) => setValue(e)}
-            placeHolder="작성하기"
-            autoFocus
-          />
-
-          <CustomButton
-            label="추가"
-            onClick={() => {
-              setValue("");
-              setExercise((p) => [...p, value]);
-            }}
-            size="sm"
-          />
-        </AddItem>
+        <CustomInput
+          label="운동"
+          initialValue={value}
+          passedHandleChange={(e) => setValue(e)}
+          onKeyDown={handleKeyDown}
+          autoFocus
+        />
       )}
     </Box>
   );
