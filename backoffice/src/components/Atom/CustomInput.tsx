@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { ReactComponent as ClearText } from "assets/svgs/clearText.svg";
-import { ComponentProps, useState } from "react";
+import { ComponentProps, useEffect, useState } from "react";
 import { Color, Type } from "./CustomButton";
 
 export type CustomInputProps = ComponentProps<"input"> & {
@@ -39,7 +39,6 @@ function CustomInput({
   };
 
   const handleClickClear = () => {
-    console.log(1445);
     if (passedHandleChange) {
       passedHandleChange("");
     }
@@ -53,6 +52,12 @@ function CustomInput({
   const handleBlur = () => {
     setIsFocused(false);
   };
+
+  useEffect(() => {
+    if (initialValue !== "") return;
+
+    setValue(initialValue);
+  }, [initialValue]);
 
   return (
     <Wrapper>

@@ -12,6 +12,7 @@ interface CustomButtonProps {
   color?: Color;
   type?: Type;
   size?: Size;
+  isDisabled?: boolean;
 }
 
 function CustomButton({
@@ -21,11 +22,12 @@ function CustomButton({
   color = "default",
   size = "md",
   type = "contained",
+  isDisabled = false,
 }: CustomButtonProps) {
-  const buttonProps = { color, fullWidth, type, size };
+  const buttonProps = { color, fullWidth, type, size, isDisabled };
 
   return (
-    <Button buttonProps={buttonProps} onClick={onClick}>
+    <Button buttonProps={buttonProps} onClick={onClick} disabled={isDisabled}>
       {label}
     </Button>
   );
