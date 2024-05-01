@@ -1,24 +1,27 @@
 import styled from "@emotion/styled";
 import CustomButton from "components/Atom/CustomButton";
 import CustomInput from "components/Atom/CustomInput";
-import { useState } from "react";
+import { getAuth } from "firebase/auth";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { To } from "router/router";
+import { useAuth } from "service/AuthService";
 
 function LogInPage() {
-  // const auth = getAuth();
+  const auth = getAuth();
   const navigate = useNavigate();
+  const { logIn, isLoggedIn } = useAuth();
 
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
 
   const handelClickLogIn = () => {
-    // return signInWithEmailAndPassword(auth, id, pw)
-    //   .then((e) => {
-    //     console.log(e);
-    //     return navigate("/");
-    //   })
-    //   .catch((err) => console.log(err));
+    logIn({ auth, id, pw });
   };
+
+  useEffect(() => {
+    if (isLoggedIn) navigate(To.Home);
+  }, []);
 
   return (
     <Wrapper>

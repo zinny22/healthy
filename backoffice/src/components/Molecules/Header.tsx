@@ -1,24 +1,38 @@
 import styled from "@emotion/styled";
 import CustomButton from "components/Atom/CustomButton";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { To } from "router/router";
+import { useAuth } from "service/AuthService";
 import Navigation from "./Navigation";
 
 function Header() {
+  const { logOut } = useAuth();
+  const [userId, setUserId] = useState<string>("");
+
+  useEffect(() => {
+    const _userId = localStorage.getItem("userId") as string;
+    setUserId(_userId);
+  }, []);
+
   return (
     <Wrapper>
       <TitleAndNav>
-        <Title>백오피스</Title>
+        <Link to={To.Home}>
+          <Title>백오피스</Title>
+        </Link>
 
         <Navigation />
       </TitleAndNav>
 
       <UserNameAndButton>
         <UserName>
-          <strong>00</strong>님 안녕하세요
+          <strong>{userId.split("@")[0]}</strong>님 안녕하세요
         </UserName>
 
         <CustomButton
           label="로그아웃"
-          onClick={() => {}}
+          onClick={logOut}
           color="danger"
           type="none"
         />

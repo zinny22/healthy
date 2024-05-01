@@ -1,10 +1,8 @@
 import styled from "@emotion/styled";
 import Header from "components/Molecules/Header";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 function Layout() {
-  const navigate = useNavigate();
-
   return (
     <Wrapper>
       <Header />
