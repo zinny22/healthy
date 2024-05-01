@@ -10,11 +10,11 @@ interface BodyTypeExerciseFormProps {
 
 function BodyTypeExerciseForm({ exercise }: BodyTypeExerciseFormProps) {
   const [value, setValue] = useState<string>("");
-  const [_exercise, setIsExercise] = useState<string[]>(exercise);
+  const [_exercise, setExercise] = useState<string[]>(exercise);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsExercise(exercise);
+    setExercise(exercise);
   }, [exercise]);
 
   return (
@@ -47,7 +47,7 @@ function BodyTypeExerciseForm({ exercise }: BodyTypeExerciseFormProps) {
             label="추가"
             onClick={() => {
               setValue("");
-              setIsExercise((p) => [...p, value]);
+              setExercise((p) => [...p, value]);
             }}
             size="sm"
           />

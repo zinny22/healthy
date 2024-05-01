@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
-import Box from "components/Atom/Box";
 import BodyTypeExerciseForm from "components/Molecules/BodyTypeExerciseForm";
+import BodyTypeFoodForm from "components/Molecules/BodyTypeFoodForm";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { BodyTypeKey, BodyTypeValue } from "schema/bodyType.schema";
+import { BodyTypeKey, BodyTypeValue, FoodType } from "schema/bodyType.schema";
 import { db } from "shared/firebase";
 
 function BodyTypeDetailPage() {
@@ -12,6 +12,7 @@ function BodyTypeDetailPage() {
 
   const [value, setValue] = useState<BodyTypeValue>();
   const [exercise, setExercise] = useState<string[]>([]);
+  const [food, setFood] = useState<FoodType>();
 
   const initBodyTypeList = async () => {
     const query = await getDocs(collection(db, "체질"));
@@ -24,6 +25,7 @@ function BodyTypeDetailPage() {
       if (_id === id) {
         setValue(value);
         setExercise(value.운동);
+        setFood(value.음식);
       }
     });
   };
@@ -35,9 +37,7 @@ function BodyTypeDetailPage() {
   return (
     <Wrapper>
       <BodyTypeExerciseForm exercise={exercise} />
-      <Box width="100%">
-        <p>음식</p>
-      </Box>
+      <BodyTypeFoodForm food={food} />
     </Wrapper>
   );
 }

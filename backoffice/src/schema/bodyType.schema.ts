@@ -10,7 +10,7 @@ export interface BodyTypeValue {
   음식: FoodType;
 }
 
-type FoodType = {
+export type FoodType = {
   [key in FoodTypeKey]: string[];
 };
 
