@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import Box from "components/Atom/Box";
 import CustomButton from "components/Atom/CustomButton";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -15,6 +16,7 @@ interface BodyTypeFoodFormProps {
 
 function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
   const { id } = useParams();
+  const auth = getAuth();
 
   const [foodKey, setFoodKey] = useState<string>("");
   const [foodValues, setFoodValues] = useState<string[]>([]);
@@ -54,8 +56,12 @@ function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
   const handelClickSave = async () => {
     const bodyTypeRef = doc(db, "체질", id as string);
 
-    await updateDoc(bodyTypeRef, {
-      음식: _food,
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await updateDoc(bodyTypeRef, {
+          음식: _food,
+        });
+      }
     });
   };
 

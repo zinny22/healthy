@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import Box from "components/Atom/Box";
 import CustomInput from "components/Atom/CustomInput";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -12,6 +13,7 @@ interface BodyTypeExerciseFormProps {
 
 function BodyTypeExerciseForm({ exercise }: BodyTypeExerciseFormProps) {
   const { id } = useParams();
+  const auth = getAuth();
 
   const [value, setValue] = useState<string>("");
   const [_exercise, setExercise] = useState<string[]>(exercise);
@@ -32,8 +34,12 @@ function BodyTypeExerciseForm({ exercise }: BodyTypeExerciseFormProps) {
   const handelClickSave = async () => {
     const bodyTypeRef = doc(db, "체질", id as string);
 
-    await updateDoc(bodyTypeRef, {
-      운동: _exercise,
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await updateDoc(bodyTypeRef, {
+          운동: _exercise,
+        });
+      }
     });
   };
 
