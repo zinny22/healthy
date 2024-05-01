@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import Box from "components/Atom/Box";
 import CustomButton from "components/Atom/CustomButton";
 import { useEffect, useState } from "react";
-import { FoodType } from "schema/bodyType.schema";
+import { FoodType, FoodTypeKey } from "schema/bodyType.schema";
 import color from "styles/color";
 import AddFoodModal from "./AddFoodModal";
 
@@ -23,10 +23,22 @@ function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
   };
 
   const handleClickSave = () => {
-    const newFood: any = {
-      ..._food,
-      [foodKey]: foodValues,
-    };
+    let newFood: any;
+
+    if (_food && _food.hasOwnProperty(foodKey)) {
+      const existingValues = _food[foodKey as FoodTypeKey];
+      const updatedValues = [...existingValues, ...foodValues];
+
+      newFood = {
+        ..._food,
+        [foodKey]: updatedValues,
+      };
+    } else {
+      newFood = {
+        ..._food,
+        [foodKey]: foodValues,
+      };
+    }
 
     setFood(newFood);
     setFoodKey("");
@@ -38,7 +50,6 @@ function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
     setFood(food);
   }, [food]);
 
-  console.log(_food && Object.entries(_food));
   return (
     <Box
       width="100%"
@@ -51,14 +62,17 @@ function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
       <List>
         {_food &&
           Object.entries(_food).map(([key, value], index) => (
-            <li key={index}>
-              <span style={{ color: color.dander60 }}>{key} | </span>
-              {value.map((item, index) => (
-                <span key={item}>
-                  {item} {index + 1 < value.length && ","}
-                </span>
-              ))}
-            </li>
+            <FoodItem key={index}>
+              <FoodItemCategory>{key}</FoodItemCategory>
+
+              <FoodItemList>
+                {value.map((item, index) => (
+                  <li key={item}>
+                    {item} {index + 1 < value.length && ","}
+                  </li>
+                ))}
+              </FoodItemList>
+            </FoodItem>
           ))}
       </List>
 
@@ -82,13 +96,26 @@ function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
 const List = styled.ul`
   padding-bottom: 20px;
   display: grid;
+  row-gap: 24px;
+`;
+
+const FoodItem = styled.div`
+  display: grid;
   row-gap: 8px;
+  border-bottom: 1px solid ${color.gray200};
+  padding-bottom: 8px;
 `;
 
-const AddItem = styled.div`
+const FoodItemCategory = styled.p`
+  font-size: 16px;
+  background-color: ${color.gray300};
+  border-radius: 12px;
+  padding: 4px 8px;
+  width: fit-content;
+`;
+
+const FoodItemList = styled.ul`
   display: flex;
-  align-items: center;
-  column-gap: 4px;
+  column-gap: 12px;
 `;
-
 export default BodyTypeFoodForm;
