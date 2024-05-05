@@ -9,6 +9,8 @@ import { FoodType, FoodTypeKey } from "schema/bodyType.schema";
 import { db } from "shared/firebase";
 import color from "styles/color";
 import AddFoodModal from "./AddFoodModal";
+import EditFoodModal from "./EditFoodModal";
+import { useAuth } from "service/AuthService";
 
 interface BodyTypeFoodFormProps {
   food?: FoodType;
@@ -17,15 +19,23 @@ interface BodyTypeFoodFormProps {
 function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
   const { id } = useParams();
   const auth = getAuth();
-
+  const { logOut } = useAuth();
+  
   const [foodKey, setFoodKey] = useState<string>("");
   const [foodValues, setFoodValues] = useState<string[]>([]);
+  const [selectedFoodKey, setSelectedFoodKey] = useState<string>("");
+  const [selectedFoodValues, setSelectedFoodValues] = useState<string[]>([]);
   const [_food, setFood] = useState<FoodType | undefined>(food);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isAddFoodModal, setIsAddFoodModal] = useState<boolean>(false);
+  const [isEditFoodModal, setIsEditFoodModal] = useState<boolean>(false);
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
+  const handleClickAddFoodModal = () => {
+    setIsAddFoodModal(!isAddFoodModal);
+  };
+
+  const handleClickEditFoodModal = () => {
+    setIsEditFoodModal(!isEditFoodModal);
   };
 
   const handleClickAddFood = () => {
@@ -50,7 +60,21 @@ function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
     setFood(newFood);
     setFoodKey("");
     setFoodValues([]);
-    setIsModalOpen(false);
+    setIsAddFoodModal(false);
+  };
+
+
+  const handleClickSaveEditedFood = () => {
+    let newFood: any;
+    newFood = {
+      ..._food,
+      [selectedFoodKey]: selectedFoodValues,
+    };
+
+    setFood(newFood);
+    setSelectedFoodKey("")
+    setSelectedFoodValues([]);
+    setIsEditFoodModal(false);
   };
 
   const handelClickSave = async () => {
@@ -61,9 +85,19 @@ function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
         await updateDoc(bodyTypeRef, {
           음식: _food,
         });
+      } else{
+        alert('다시 로그인 해주세요');
+        logOut()
       }
     });
   };
+
+  const handleClickEditFood = (foodKey:any, values:string[]) =>{
+    setIsEditFoodModal(true)
+    setSelectedFoodKey(foodKey);
+    setSelectedFoodValues(values)
+  }
+
 
   useEffect(() => {
     setFood(food);
@@ -82,7 +116,7 @@ function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
         {_food &&
           Object.entries(_food).map(([key, value], index) => (
             <FoodItem key={index}>
-              <FoodItemCategory>{key}</FoodItemCategory>
+             <CustomButton label={key} onClick={() => handleClickEditFood(key, value)} color={isEditMode ? "default": "gray"} size="sm" isDisabled={!isEditMode}/>
 
               <FoodItemList>
                 {value.map((item, index) => (
@@ -96,17 +130,26 @@ function BodyTypeFoodForm({ food }: BodyTypeFoodFormProps) {
       </List>
 
       {isEditMode && (
-        <CustomButton label="추가하기" onClick={() => setIsModalOpen(true)} />
+        <CustomButton label="추가하기" onClick={() => setIsAddFoodModal(true)} />
       )}
 
       <AddFoodModal
-        isModalOpen={isModalOpen}
+        isModalOpen={isAddFoodModal}
         handleClickSave={handleClickAddFood}
-        toggleModal={toggleModal}
+        toggleModal={handleClickAddFoodModal}
         foodKey={foodKey}
         setFoodKey={setFoodKey}
         foodValues={foodValues}
         setFoodValues={setFoodValues}
+      />
+      
+      <EditFoodModal
+        isModalOpen={isEditFoodModal}
+        handleClickSave={handleClickSaveEditedFood}
+        toggleModal={handleClickEditFoodModal}
+        foodTypeKey={selectedFoodKey}
+        foodValues={selectedFoodValues}
+        setFoodValues={setSelectedFoodValues}
       />
     </Box>
   );
@@ -125,16 +168,10 @@ const FoodItem = styled.div`
   padding-bottom: 8px;
 `;
 
-const FoodItemCategory = styled.p`
-  font-size: 16px;
-  background-color: ${color.gray300};
-  border-radius: 12px;
-  padding: 4px 8px;
-  width: fit-content;
-`;
 
 const FoodItemList = styled.ul`
   display: flex;
   column-gap: 12px;
+  flex-wrap: wrap;
 `;
 export default BodyTypeFoodForm;

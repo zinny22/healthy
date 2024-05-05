@@ -37,7 +37,7 @@ const Button = styled.button<{
   buttonProps: Omit<CustomButtonProps, "label" | "onClick">;
 }>`
   white-space: nowrap;
-  width: ${({ buttonProps }) => buttonProps.fullWidth && "100%"};
+  width: ${({ buttonProps }) => buttonProps.fullWidth ? "100%" : "fit-content"};
   background-color: ${({ buttonProps }) => {
     if (buttonProps.type === "contained") {
       switch (buttonProps.color) {
@@ -108,6 +108,8 @@ const Button = styled.button<{
     }
   }};
 
+  pointer-events: ${({ buttonProps }) => buttonProps.isDisabled ? "none" : "initial"};
+  
   :hover {
     background-color: ${({ buttonProps }) => {
       switch (buttonProps.color) {
