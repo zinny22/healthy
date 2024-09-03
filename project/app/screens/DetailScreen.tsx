@@ -2,18 +2,18 @@ import firestore from '@react-native-firebase/firestore';
 import {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {Text} from 'react-native-paper';
-import {BodyTypeValue, FoodType} from '../../schema/bodyType.schema';
+import {BodyTypeValue, FoodType} from '../schema/bodyType.schema';
 
-interface DetailProps {
-  route: {
+interface Props {
+  route?: {
     params: {
       name: string;
     };
   };
 }
 
-function Detail(props: DetailProps) {
-  const name = props.route.params.name;
+function DetailScreen({route}: Props) {
+  const name = route?.params.name;
 
   const [exercise, setExercise] = useState<string[]>([]);
   const [food, setFood] = useState<FoodType>();
@@ -58,4 +58,4 @@ function Detail(props: DetailProps) {
   );
 }
 
-export default Detail;
+export default DetailScreen;

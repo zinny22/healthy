@@ -2,14 +2,15 @@ import firestore from '@react-native-firebase/firestore';
 import {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-paper';
-import {BodyTypeKey, FoodType} from '../../schema/bodyType.schema';
+import SearchBar from '../components/atoms/input/Input';
+import {BodyTypeKey, FoodType} from '../schema/bodyType.schema';
 
 interface FoodRecommendationsByBodyType {
   title: BodyTypeKey;
   data: FoodType;
 }
 
-function Food() {
+function FoodScreen() {
   const [foodRecommendationsByBodyType, setFoodRecommendationsByBodyType] =
     useState<FoodRecommendationsByBodyType[]>([]);
 
@@ -33,12 +34,14 @@ function Food() {
 
   return (
     <ScrollView style={styles.container}>
+      <SearchBar onSearch={() => {}} />
+
       {foodRecommendationsByBodyType.map(item => (
         <View key={item.title}>
           <Text style={styles.sectionHeader}>{item.title}</Text>
 
           {Object.entries(item.data).map(([key, value], index) => (
-            <View key={index}>
+            <View key={index} style={styles.sectionSubContainer}>
               <Text style={styles.sectionSubHeader}>{key}</Text>
 
               <View style={styles.list}>
@@ -63,21 +66,37 @@ const styles = StyleSheet.create({
   },
 
   sectionHeader: {
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    marginBottom: 8,
     fontSize: 16,
     fontWeight: 'bold',
     backgroundColor: 'rgba(247,247,247,1.0)',
   },
 
+  sectionSubContainer: {
+    borderWidth: 1,
+    borderColor: '#000000',
+    position: 'relative',
+    marginTop: 20,
+    marginHorizontal: 20,
+    borderRadius: 4,
+    marginBottom: 20,
+  },
+
   sectionSubHeader: {
+    paddingHorizontal: 12,
     paddingVertical: 4,
     fontSize: 14,
+    backgroundColor: '#fff',
+    position: 'absolute',
+    top: -20,
+    left: 20,
   },
 
   list: {
+    paddingTop: 20,
+    paddingHorizontal: 24,
     flexWrap: 'wrap',
     flexDirection: 'row',
     paddingBottom: 12,
@@ -88,4 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Food;
+export default FoodScreen;

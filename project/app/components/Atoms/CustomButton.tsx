@@ -1,15 +1,15 @@
 import React from 'react';
-import {Text, StyleSheet, Pressable} from 'react-native';
+import {Pressable, StyleSheet, Text} from 'react-native';
 
 interface CustomButtonProps {
-  title: string;
+  label: string;
   onPress: () => void;
 }
 
-function CustomButton({onPress, title}: CustomButtonProps) {
+function CustomButton({onPress, label}: CustomButtonProps) {
   return (
     <Pressable style={[styles.button]} onPress={onPress}>
-      <Text style={[styles.title]}>{title}</Text>
+      <Text style={[styles.label]}>{label}</Text>
     </Pressable>
   );
 }
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 5,
   },
-  title: {
+  label: {
     fontSize: 15,
   },
 });

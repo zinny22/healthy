@@ -78,7 +78,7 @@ android {
     namespace "com.healthy"
     defaultConfig {
         applicationId "com.healthy"
-        minSdkVersion rootProject.ext.minSdkVersion
+        minSdkVersion 23
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"

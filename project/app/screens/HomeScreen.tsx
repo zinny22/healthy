@@ -1,14 +1,7 @@
-import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useState} from 'react';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 type Detail = {
   name: string;
@@ -18,7 +11,7 @@ type navigatorType = {
   Detail: Detail;
 };
 
-function Home() {
+function HomeScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<navigatorType>>();
 
   const [containerWidth, setContainerWidth] = useState(0);
@@ -70,4 +63,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#b52525',
   },
 });
-export default Home;
+export default HomeScreen;

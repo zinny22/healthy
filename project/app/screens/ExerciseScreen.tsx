@@ -1,14 +1,15 @@
 import firestore from '@react-native-firebase/firestore';
 import {useEffect, useState} from 'react';
-import {SectionList, StyleSheet, Text, View} from 'react-native';
-import {BodyTypeKey} from '../../schema/bodyType.schema';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import {Text} from 'react-native-paper';
+import {BodyTypeKey} from '../schema/bodyType.schema';
 
 interface ExerciseRecommendationsByBodyType {
   title: BodyTypeKey;
   data: string[];
 }
 
-function Exercise() {
+function ExerciseScreen() {
   const [
     exerciseRecommendationsByBodyType,
     setExerciseRecommendationsByBodyType,
@@ -33,26 +34,29 @@ function Exercise() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text>각 체질별 운동 보기 : 필터 기능 있으면 좋겠음</Text>
 
-      <SectionList
-        sections={exerciseRecommendationsByBodyType}
-        renderItem={({item}) => <Text style={styles.item}>-{item}</Text>}
-        renderSectionHeader={({section}) => (
-          <Text style={styles.sectionHeader}>{section.title}</Text>
-        )}
-        keyExtractor={item => `basicListEntry-${item}`}
-      />
-    </View>
+      {exerciseRecommendationsByBodyType.map(item => (
+        <View key={item.title}>
+          <Text style={styles.sectionHeader}>{item.title}</Text>
+
+          <View style={styles.list}>
+            {item.data.map(_item => (
+              <Text key={_item} style={styles.item}>
+                - {_item}
+              </Text>
+            ))}
+          </View>
+        </View>
+      ))}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 12,
-    paddingVertical: 24,
     backgroundColor: '#ffffff',
   },
 
@@ -61,26 +65,24 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  divider: {
-    backgroundColor: '#bababa',
-    height: 1,
-    marginVertical: 12,
-  },
-
   sectionHeader: {
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
-    fontSize: 14,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    marginBottom: 8,
+    fontSize: 16,
     fontWeight: 'bold',
     backgroundColor: 'rgba(247,247,247,1.0)',
   },
 
+  list: {
+    paddingBottom: 12,
+  },
+
   item: {
-    fontSize: 16,
-    paddingBottom: 8,
+    paddingHorizontal: 12,
+    paddingBottom: 12,
+    fontSize: 12,
   },
 });
 
-export default Exercise;
+export default ExerciseScreen;
