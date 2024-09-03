@@ -42,7 +42,12 @@ function LogInPage() {
           label="PW"
           type="password"
         />
-        <CustomButton label="로그인" onClick={handelClickLogIn} fullWidth/>
+        <CustomButton
+          label="로그인"
+          onClick={handelClickLogIn}
+          fullWidth
+          size="lg"
+        />
       </Box>
     </Wrapper>
   );
