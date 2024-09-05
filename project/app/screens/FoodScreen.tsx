@@ -34,7 +34,7 @@ function FoodScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <SearchBar onSearch={() => {}} />
+      <SearchBar onSearch={() => {}} placeholder="찾고싶은 음식을 검색하세요" />
 
       {foodRecommendationsByBodyType.map(item => (
         <ItemCard key={item.title} item={item} />

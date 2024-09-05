@@ -5,18 +5,20 @@ import {color} from '../../../styles/color';
 
 interface Props {
   onSearch: (query: string) => void;
+  placeholder?: string;
 }
 
-const SearchBar = ({onSearch}: Props) => {
+const SearchBar = ({onSearch, placeholder}: Props) => {
   const [query, setQuery] = React.useState('');
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="찾고싶은 음식을 검색하세요"
+        placeholder={placeholder}
         value={query}
         onChangeText={setQuery}
+        placeholderTextColor="#9E9E9E"
       />
       <TouchableOpacity style={styles.button} onPress={() => onSearch(query)}>
         <Icon name="search" size={20} color="white" />

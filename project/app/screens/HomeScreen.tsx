@@ -23,27 +23,23 @@ function HomeScreen() {
   return (
     <View style={styles.warp}>
       <View style={styles.banner}>
-        <Text>건강한 하루</Text>
-        <Text style={styles.title}>내 채질 찾기</Text>
+        <Text style={styles.title}>당신의 체질은</Text>
+        <Text style={styles.title}>무엇인가요?</Text>
       </View>
 
       <FlatList
         data={list}
-        columnWrapperStyle={{
-          justifyContent: 'space-between',
-        }}
+        columnWrapperStyle={styles.columnWrapper}
         onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}
         numColumns={numColumns}
         renderItem={({item}) => (
           <TouchableOpacity
-            style={{
-              width: containerWidth / numColumns,
-              backgroundColor: '#f9c2ff',
-              padding: 20,
-              alignItems: 'center',
-            }}
-            onPress={() => navigation.push('Detail', {name: item})}>
-            <Text style={{color: 'black', fontSize: 14}}>{item}</Text>
+            style={styles.touchable}
+            onPress={() => {
+              navigation.push('Detail', {name: item});
+            }}>
+            <View style={styles.circle} />
+            <Text style={styles.text}>{item}</Text>
           </TouchableOpacity>
         )}
       />
@@ -55,14 +51,7 @@ const styles = StyleSheet.create({
   warp: {
     justifyContent: 'center',
   },
-  banner: {
-    height: 400,
-    backgroundColor: color.main,
-    display: 'flex',
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-    position: 'relative',
-  },
+
   logo: {
     fontWeight: '500',
     fontSize: 16,
@@ -70,17 +59,38 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 40,
   },
-  title: {
-    fontWeight: '500',
-    fontSize: 28,
-    color: 'white',
-  },
-  buttonWrapper: {
+  banner: {
+    height: '40%',
     display: 'flex',
+    justifyContent: 'center',
+    paddingHorizontal: 28,
+    backgroundColor: 'white',
   },
-  button: {
+  title: {
+    fontSize: 40,
+    color: color.main,
+    fontFamily: 'Pretendard-Bold',
+  },
+
+  columnWrapper: {
+    gap: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  touchable: {
+    gap: 10,
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  circle: {
     width: 100,
-    backgroundColor: '#b52525',
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: color.sub,
+  },
+  text: {
+    fontSize: 16,
+    fontFamily: 'Pretendard-regular',
   },
 });
 export default HomeScreen;

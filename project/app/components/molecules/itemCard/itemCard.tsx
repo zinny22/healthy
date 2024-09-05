@@ -1,7 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import {BodyTypeKey, FoodType} from '../../../schema/bodyType.schema';
 import {color} from '../../../styles/color';
-import Divider from '../../atoms/divider/Divider';
 import SectionTitle from '../../atoms/sectionTitle/SectionTitle';
 
 interface Props {
@@ -29,7 +28,7 @@ function ItemCard({item}: Props) {
         </View>
       ))}
 
-      <Divider width={20} />
+      {/* <Divider width={20} /> */}
     </View>
   );
 }
@@ -43,8 +42,8 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     fontSize: 14,
-    fontWeight: '600',
     color: color.main,
+    fontFamily: 'Pretendard-SemiBold',
   },
   list: {
     flexWrap: 'wrap',
@@ -54,6 +53,7 @@ const styles = StyleSheet.create({
   item: {
     fontSize: 14,
     color: '#676767',
+    fontFamily: 'Pretendard-Regular',
   },
 });
 

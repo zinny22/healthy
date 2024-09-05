@@ -1,7 +1,8 @@
 import firestore from '@react-native-firebase/firestore';
 import {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import {Text} from 'react-native-paper';
+import {ScrollView, StyleSheet} from 'react-native';
+import SearchBar from '../components/atoms/input/Input';
+import Card from '../components/molecules/card/Card';
 import {BodyTypeKey} from '../schema/bodyType.schema';
 
 interface ExerciseRecommendationsByBodyType {
@@ -35,20 +36,10 @@ function ExerciseScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text>각 체질별 운동 보기 : 필터 기능 있으면 좋겠음</Text>
+      <SearchBar onSearch={() => {}} placeholder="찾고싶은 운동을 검색하세요" />
 
       {exerciseRecommendationsByBodyType.map(item => (
-        <View key={item.title}>
-          <Text style={styles.sectionHeader}>{item.title}</Text>
-
-          <View style={styles.list}>
-            {item.data.map(_item => (
-              <Text key={_item} style={styles.item}>
-                - {_item}
-              </Text>
-            ))}
-          </View>
-        </View>
+        <Card key={item.title} item={item} />
       ))}
     </ScrollView>
   );
