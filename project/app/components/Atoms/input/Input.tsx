@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {color} from '../../../styles/color';
 
 interface Props {
   onSearch: (query: string) => void;
@@ -27,25 +28,28 @@ const SearchBar = ({onSearch}: Props) => {
 // 스타일 정의
 const styles = StyleSheet.create({
   container: {
+    height: 48,
+    borderColor: color.main,
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
-    borderRadius: 25,
-    backgroundColor: '#f0f0f0',
     borderWidth: 1,
-    borderColor: '#007bff',
-    margin: 10,
+    marginHorizontal: 16,
+    marginTop: 25,
+    marginBottom: 20,
   },
   input: {
     flex: 1,
-    padding: 10,
     fontSize: 16,
     color: '#333',
+    marginLeft: 12,
+    marginRight: 8,
   },
+
   button: {
-    padding: 10,
-    backgroundColor: '#007bff',
-    borderRadius: 25,
+    width: 48,
+    height: 48,
+    backgroundColor: color.main,
+    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
